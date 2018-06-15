@@ -1,18 +1,24 @@
 package pluralsight.demo;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
-
-import org.springframework.stereotype.Component;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel("User description")
+@Entity
 public class User {
 
+	@Id
+	@GeneratedValue
 	private Integer id;
 	
 	@Size(min=2, message="User name should be more than 2 characters")
@@ -23,6 +29,8 @@ public class User {
 	@ApiModelProperty(notes="user DOB should be past")
 	private Date dateOfBirth;
 	
+	@OneToMany(mappedBy="user")
+	private List<Post> post;
 	
 	public User() {
 		super();
@@ -51,6 +59,16 @@ public class User {
 	}
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+	public List<Post> getPost() {
+		return post;
+	}
+	public void setPost(List<Post> post) {
+		this.post = post;
+	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", dateOfBirth=" + dateOfBirth + "]";
 	}
 	
 	
